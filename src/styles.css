@@ -140,7 +140,7 @@ h2 {
 }
 
 .labLayout {
-  grid-template-columns: minmax(320px, 1fr) minmax(300px, 410px);
+  grid-template-columns: minmax(220px, 280px) minmax(360px, 1fr) minmax(300px, 420px);
   align-items: stretch;
 }
 
@@ -174,30 +174,35 @@ h2 {
 .stateBadge {
   position: absolute;
   right: 18px;
-  bottom: 18px;
-  min-width: 112px;
-  border: 1px solid rgba(95, 106, 136, 0.28);
-  border-radius: 999px;
-  padding: 7px 14px;
-  background: rgba(255, 255, 255, 0.86);
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 760;
-  text-align: center;
+  top: 18px;
 }
 
 [data-theme="dark"] .stateBadge {
-  border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.08);
-  color: #d4dcdf;
+  color: #eef6ef;
+}
+
+.stateBadge--select .controlPanel__select {
+  width: 228px;
+  min-height: 40px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  font-weight: 680;
+  line-height: 1;
+  text-transform: capitalize;
+}
+
+.stateBadge__static {
+  display: flex;
+  align-items: center;
+  pointer-events: none;
 }
 
 .controlPanel {
   display: grid;
   align-content: start;
-  gap: 22px;
+  gap: 14px;
   border-radius: 8px;
-  padding: 22px;
+  padding: 16px;
 }
 
 .expressionLayout {
@@ -629,12 +634,24 @@ h2 {
 
 .controlPanel__group {
   display: grid;
-  gap: 10px;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 6px;
+}
+
+.controlPanel__select {
+  min-height: 38px;
+  border: 1px solid rgba(95, 106, 136, 0.28);
+  border-radius: 7px;
+  padding: 8px 10px;
+  background: #fff;
+  color: var(--text);
+  font-weight: 680;
 }
 
 .controlPanel__label {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 760;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -698,7 +715,8 @@ h2 {
 }
 
 .appShell[data-theme="dark"] .segmentedButton,
-.appShell[data-theme="dark"] .secondaryButton {
+.appShell[data-theme="dark"] .secondaryButton,
+.appShell[data-theme="dark"] .controlPanel__select {
   border-color: rgba(255, 255, 255, 0.15);
   background: #101511;
   color: #eef6ef;
@@ -712,7 +730,8 @@ h2 {
 
 .sliderControl {
   display: grid;
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 6px;
 }
 
 .sliderControl input {
@@ -720,7 +739,7 @@ h2 {
 }
 
 .interviewLayout {
-  grid-template-columns: minmax(270px, 0.78fr) minmax(320px, 1fr);
+  grid-template-columns: 1fr;
 }
 
 .interviewAvatarSurface {
@@ -728,12 +747,79 @@ h2 {
 }
 
 .transcriptPanel {
+  position: relative;
   display: grid;
   align-content: start;
   gap: 12px;
   min-height: 410px;
   border-radius: 8px;
   padding: 18px;
+}
+
+.modePanel {
+  display: grid;
+  gap: 14px;
+}
+
+.modePanel .sectionHeader {
+  margin-bottom: 0;
+}
+
+.modePanel .transcriptPanel,
+.modePanel .presenterRail {
+  min-height: 430px;
+}
+
+.modePanel--presentation .presenterRail {
+  min-height: auto;
+}
+
+.modePanel .insightGrid {
+  display: none;
+}
+
+.modePanel--presentation .presenterRail {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 16px;
+}
+
+.modePanel--presentation .insightGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.modePanel__empty {
+  border: 1px dashed rgba(95, 106, 136, 0.35);
+  border-radius: 8px;
+  padding: 16px;
+  color: var(--muted);
+}
+
+.demoPlayButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 74px;
+  height: 74px;
+  border: 1px solid rgba(95, 106, 136, 0.28);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.demoPlayButton--stage {
+  z-index: 2;
+}
+
+.appShell[data-theme="dark"] .demoPlayButton {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(16, 21, 17, 0.9);
+  color: #eef6ef;
 }
 
 .messageRow {

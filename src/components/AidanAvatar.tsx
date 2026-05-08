@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import type {
   AidanExpressionTech,
   AidanFaceVariant,
@@ -37,6 +37,7 @@ export function AidanAvatar({
   lipSyncMode = "soft",
   className = "",
 }: AidanAvatarProps) {
+  const [showReferenceModel, setShowReferenceModel] = useState(true);
   const clampedIntensity = Math.min(1, Math.max(0, speakingIntensity));
   const clampedExpression = Math.min(1, Math.max(0, expressionStrength));
   const style = {
@@ -87,15 +88,18 @@ export function AidanAvatar({
         </g>
 
         <g className="aidanAvatar__body" filter="url(#aidanSoftShadow)">
-          <image
-            className="aidanAvatar__referenceModel"
-            href="/aidan-reference-model.png"
-            x="34"
-            y="26"
-            width="176"
-            height="168"
-            preserveAspectRatio="xMidYMid meet"
-          />
+          {showReferenceModel ? (
+            <image
+              className="aidanAvatar__referenceModel"
+              href="/aidan-reference-model.png"
+              x="34"
+              y="26"
+              width="176"
+              height="168"
+              preserveAspectRatio="xMidYMid meet"
+              onError={() => setShowReferenceModel(false)}
+            />
+          ) : null}
           <rect className="aidanAvatar__field" x="48" y="45" width="145" height="136" rx="28" />
           <path
             className="aidanAvatar__shellShape"

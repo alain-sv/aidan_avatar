@@ -1,97 +1,66 @@
-import type { AidanSize, AidanState, AidanTheme } from "../types";
+import type {
+  AidanExpressionTech,
+  AidanFaceVariant,
+  AidanLipSyncMode,
+  AidanTheme,
+} from "../types";
+
+export type AidanDemoMode = "manual" | "interview" | "presentation";
 
 type AvatarStateControlsProps = {
-  state: AidanState;
-  size: AidanSize;
+  demoMode: AidanDemoMode;
   theme: AidanTheme;
   speakingIntensity: number;
-  onStateChange: (state: AidanState) => void;
-  onSizeChange: (size: AidanSize) => void;
+  expressionTech: AidanExpressionTech;
+  expressionStrength: number;
+  faceVariant: AidanFaceVariant;
+  lipSyncMode: AidanLipSyncMode;
+  onDemoModeChange: (mode: AidanDemoMode) => void;
   onThemeChange: (theme: AidanTheme) => void;
   onSpeakingIntensityChange: (intensity: number) => void;
+  onExpressionTechChange: (tech: AidanExpressionTech) => void;
+  onExpressionStrengthChange: (strength: number) => void;
+  onFaceVariantChange: (variant: AidanFaceVariant) => void;
+  onLipSyncModeChange: (mode: AidanLipSyncMode) => void;
 };
 
-const states: AidanState[] = [
-  "idle",
-  "listening",
-  "questioning",
-  "thinking",
-  "speaking",
-  "acknowledging",
-  "complete",
-  "caution",
-];
-
-const sizes: AidanSize[] = ["small", "medium", "large"];
+const demoModes: AidanDemoMode[] = ["manual", "interview", "presentation"];
 const themes: AidanTheme[] = ["light", "dark"];
+const expressionTechs: AidanExpressionTech[] = ["musetalk", "liveportrait", "sadtalker"];
+const faceVariants: AidanFaceVariant[] = ["roundedWave", "orbit", "haloFrame", "logoStudy", "smallScale", "darkMode"];
+const lipSyncModes: AidanLipSyncMode[] = ["soft", "viseme", "aperture", "minimal"];
 
 function label(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 export function AvatarStateControls({
-  state,
-  size,
+  demoMode,
   theme,
   speakingIntensity,
-  onStateChange,
-  onSizeChange,
+  expressionTech,
+  expressionStrength,
+  faceVariant,
+  lipSyncMode,
+  onDemoModeChange,
   onThemeChange,
   onSpeakingIntensityChange,
+  onExpressionTechChange,
+  onExpressionStrengthChange,
+  onFaceVariantChange,
+  onLipSyncModeChange,
 }: AvatarStateControlsProps) {
   return (
     <div className="controlPanel" aria-label="Aidan controls">
       <div className="controlPanel__group">
-        <span className="controlPanel__label">State</span>
-        <div className="segmentedGrid">
-          {states.map((stateOption) => (
-            <button
-              className="segmentedButton"
-              data-active={stateOption === state}
-              key={stateOption}
-              onClick={() => onStateChange(stateOption)}
-              type="button"
-            >
-              {label(stateOption)}
-            </button>
+        <span className="controlPanel__label">Demo mode</span>
+        <select className="controlPanel__select" value={demoMode} onChange={(event) => onDemoModeChange(event.target.value as AidanDemoMode)}>
+          {demoModes.map((mode) => (
+            <option key={mode} value={mode}>
+              {label(mode)}
+            </option>
           ))}
-        </div>
-      </div>
-
-      <div className="controlPanel__row">
-        <div className="controlPanel__group">
-          <span className="controlPanel__label">Size</span>
-          <div className="segmentedControl">
-            {sizes.map((sizeOption) => (
-              <button
-                className="segmentedButton"
-                data-active={sizeOption === size}
-                key={sizeOption}
-                onClick={() => onSizeChange(sizeOption)}
-                type="button"
-              >
-                {label(sizeOption)}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="controlPanel__group">
-          <span className="controlPanel__label">Theme</span>
-          <div className="segmentedControl">
-            {themes.map((themeOption) => (
-              <button
-                className="segmentedButton"
-                data-active={themeOption === theme}
-                key={themeOption}
-                onClick={() => onThemeChange(themeOption)}
-                type="button"
-              >
-                {label(themeOption)}
-              </button>
-            ))}
-          </div>
-        </div>
+        </select>
       </div>
 
       <label className="sliderControl">
@@ -106,6 +75,63 @@ export function AvatarStateControls({
           value={speakingIntensity}
         />
       </label>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Lip sync mode</span>
+        <select className="controlPanel__select" value={lipSyncMode} onChange={(event) => onLipSyncModeChange(event.target.value as AidanLipSyncMode)}>
+          {lipSyncModes.map((mode) => (
+            <option key={mode} value={mode}>
+              {label(mode)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Expression engine</span>
+        <select className="controlPanel__select" value={expressionTech} onChange={(event) => onExpressionTechChange(event.target.value as AidanExpressionTech)}>
+          {expressionTechs.map((tech) => (
+            <option key={tech} value={tech}>
+              {label(tech)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <label className="sliderControl">
+        <span className="controlPanel__label">Expression strength</span>
+        <input
+          aria-label="Expression strength"
+          max="1"
+          min="0"
+          onChange={(event) => onExpressionStrengthChange(Number(event.target.value))}
+          step="0.01"
+          type="range"
+          value={expressionStrength}
+        />
+      </label>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Face variant</span>
+        <select className="controlPanel__select" value={faceVariant} onChange={(event) => onFaceVariantChange(event.target.value as AidanFaceVariant)}>
+          {faceVariants.map((variant) => (
+            <option key={variant} value={variant}>
+              {label(variant)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Theme</span>
+        <select className="controlPanel__select" value={theme} onChange={(event) => onThemeChange(event.target.value as AidanTheme)}>
+          {themes.map((themeOption) => (
+            <option key={themeOption} value={themeOption}>
+              {label(themeOption)}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }
