@@ -4,8 +4,13 @@ import { AvatarStateControls, type AidanDemoMode } from "./components/AvatarStat
 import { InsightCard } from "./components/InsightCard";
 import type {
   AidanExpressionTech,
-  AidanFaceVariant,
+  AidanFaceShape,
+  AidanEyePosition,
+  AidanEyeShape,
+  AidanEyeSize,
   AidanLipSyncMode,
+  AidanMouthShape,
+  AidanNoseShape,
   AidanState,
   AidanTheme,
 } from "./types";
@@ -72,8 +77,16 @@ export default function App() {
   const [speakingIntensity, setSpeakingIntensity] = useState(0.55);
   const [expressionTech, setExpressionTech] = useState<AidanExpressionTech>("liveportrait");
   const [expressionStrength, setExpressionStrength] = useState(0.55);
-  const [faceVariant, setFaceVariant] = useState<AidanFaceVariant>("roundedWave");
   const [lipSyncMode, setLipSyncMode] = useState<AidanLipSyncMode>("soft");
+  const [eyeShape, setEyeShape] = useState<AidanEyeShape>("round");
+  const [eyePosition, setEyePosition] = useState<AidanEyePosition>("high");
+  const [eyeSize, setEyeSize] = useState<AidanEyeSize>("large");
+  const [eyeColor, setEyeColor] = useState("#0b0f0c");
+  const [noseShape, setNoseShape] = useState<AidanNoseShape>("round");
+  const [faceShape, setFaceShape] = useState<AidanFaceShape>("rounded");
+  const [mouthShape, setMouthShape] = useState<AidanMouthShape>("smile");
+  const [showOrbit, setShowOrbit] = useState(true);
+  const [showMotionTrace, setShowMotionTrace] = useState(true);
   const [demoMode, setDemoMode] = useState<AidanDemoMode>("manual");
   const [activeInterviewStep, setActiveInterviewStep] = useState(0);
   const [isInterviewRunning, setIsInterviewRunning] = useState(false);
@@ -160,13 +173,29 @@ export default function App() {
             demoMode={demoMode}
             expressionStrength={expressionStrength}
             expressionTech={expressionTech}
-            faceVariant={faceVariant}
             lipSyncMode={lipSyncMode}
+            eyeShape={eyeShape}
+            eyePosition={eyePosition}
+            eyeSize={eyeSize}
+            eyeColor={eyeColor}
+            noseShape={noseShape}
+            faceShape={faceShape}
+            mouthShape={mouthShape}
+            showOrbit={showOrbit}
+            showMotionTrace={showMotionTrace}
             onDemoModeChange={setDemoMode}
             onExpressionStrengthChange={setExpressionStrength}
             onExpressionTechChange={setExpressionTech}
-            onFaceVariantChange={setFaceVariant}
             onLipSyncModeChange={setLipSyncMode}
+            onEyeShapeChange={setEyeShape}
+            onEyePositionChange={setEyePosition}
+            onEyeSizeChange={setEyeSize}
+            onEyeColorChange={setEyeColor}
+            onNoseShapeChange={setNoseShape}
+            onFaceShapeChange={setFaceShape}
+            onMouthShapeChange={setMouthShape}
+            onShowOrbitChange={setShowOrbit}
+            onShowMotionTraceChange={setShowMotionTrace}
             onSpeakingIntensityChange={setSpeakingIntensity}
             onThemeChange={setTheme}
             speakingIntensity={speakingIntensity}
@@ -178,7 +207,15 @@ export default function App() {
               lipSyncMode={lipSyncMode}
               expressionStrength={expressionStrength}
               expressionTech={expressionTech}
-              faceVariant={faceVariant}
+              eyeShape={eyeShape}
+              eyePosition={eyePosition}
+              eyeSize={eyeSize}
+              eyeColor={eyeColor}
+              noseShape={noseShape}
+              faceShape={faceShape}
+              mouthShape={mouthShape}
+              showOrbit={showOrbit}
+              showMotionTrace={showMotionTrace}
               size="large"
               speakingIntensity={effectiveSpeakingIntensity}
               state={effectiveState}

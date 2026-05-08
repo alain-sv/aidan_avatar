@@ -2,7 +2,13 @@ import { useState, type CSSProperties } from "react";
 import type {
   AidanExpressionTech,
   AidanFaceVariant,
+  AidanFaceShape,
+  AidanEyePosition,
+  AidanEyeShape,
+  AidanEyeSize,
   AidanLipSyncMode,
+  AidanMouthShape,
+  AidanNoseShape,
   AidanSize,
   AidanState,
   AidanTheme,
@@ -17,6 +23,15 @@ type AidanAvatarProps = {
   expressionStrength?: number;
   faceVariant?: AidanFaceVariant;
   lipSyncMode?: AidanLipSyncMode;
+  eyeShape?: AidanEyeShape;
+  eyePosition?: AidanEyePosition;
+  eyeSize?: AidanEyeSize;
+  eyeColor?: string;
+  noseShape?: AidanNoseShape;
+  faceShape?: AidanFaceShape;
+  mouthShape?: AidanMouthShape;
+  showOrbit?: boolean;
+  showMotionTrace?: boolean;
   className?: string;
 };
 
@@ -33,8 +48,17 @@ export function AidanAvatar({
   speakingIntensity = 0.45,
   expressionTech = "liveportrait",
   expressionStrength = 0.5,
-  faceVariant = "roundedWave",
+  faceVariant = "orbit",
   lipSyncMode = "soft",
+  eyeShape = "round",
+  eyePosition = "high",
+  eyeSize = "large",
+  eyeColor = "#0b0f0c",
+  noseShape = "round",
+  faceShape = "rounded",
+  mouthShape = "smile",
+  showOrbit = true,
+  showMotionTrace = true,
   className = "",
 }: AidanAvatarProps) {
   const [showReferenceModel, setShowReferenceModel] = useState(true);
@@ -54,13 +78,31 @@ export function AidanAvatar({
     "--expression-shift": `${clampedExpression * 2}px`,
     "--expression-counter-shift": `${clampedExpression * -1}px`,
     "--expression-mouth-scale": 1 + clampedExpression * 0.08,
+    "--eye-color": eyeColor,
   } as CSSProperties;
+
+  const eyeOffsetX = eyePosition === "close" ? 15 : eyePosition === "wide" ? 24 : 19.5;
+  const eyeCenterY = eyePosition === "high" ? 116 : eyePosition === "low" ? 126 : 120;
+  const eyeRadiusX = eyeSize === "large" ? 9 : 6;
+  const eyeRadiusY = eyeSize === "large" ? 9 : 6;
+  const leftEyeX = 121 - eyeOffsetX;
+  const rightEyeX = 121 + eyeOffsetX;
+
+  const faceBlockPath =
+    faceShape === "square"
+      ? "M78 86h86c8 0 14 6 14 14v41c0 8-6 14-14 14H78c-8 0-14-6-14-14v-41c0-8 6-14 14-14Z"
+      : faceShape === "shield"
+        ? "M120 78h36c8 0 15 6 15 14v38c0 20-19 33-51 33s-51-13-51-33V92c0-8 7-14 15-14h36Z"
+        : "M159 82c7 0 13 6 13 13v46c0 8-6 14-14 14H82c-8 0-14-6-14-14v-37c0-8 6-14 14-14h9c8 0 15-5 18-13 2-5 6-8 11-8s9-4 11-9l2-5c2-5 6-8 12-8 7 0 12 5 12 12v4c0 8 6 15 14 16l8 1Z";
+
+  const mouthLinePath =
+    mouthShape === "flat" ? "M104 136h34" : mouthShape === "round" ? "M106 134c7 12 23 12 30 0" : "M104 135c9 8 25 8 34 0";
 
   return (
     <figure
       className={`aidanAvatar aidanAvatar--${state} aidanAvatar--${theme} aidanAvatar--tech-${expressionTech} aidanAvatar--face-${faceVariant} aidanAvatar--lip-${lipSyncMode} ${className}`}
       style={style}
-      aria-label={`Aidan avatar, ${state}, ${faceVariant} face, ${expressionTech} expression experiment`}
+      aria-label={`Aidan avatar, ${state}, ${faceShape} face, ${expressionTech} expression experiment`}
     >
       <svg className="aidanAvatar__svg" viewBox="0 0 240 240" role="img">
         <defs>
@@ -81,11 +123,13 @@ export function AidanAvatar({
         <circle className="aidanAvatar__ambientRing" cx="120" cy="120" r="98" />
         <circle className="aidanAvatar__listeningRing" cx="120" cy="120" r="98" />
 
-        <g className="aidanAvatar__orbit">
-          <circle className="aidanAvatar__orbitDot aidanAvatar__orbitDot--one" cx="120" cy="24" r="4" />
-          <circle className="aidanAvatar__orbitDot aidanAvatar__orbitDot--two" cx="216" cy="120" r="3" />
-          <circle className="aidanAvatar__orbitDot aidanAvatar__orbitDot--three" cx="120" cy="216" r="3.5" />
-        </g>
+        {showOrbit ? (
+          <g className="aidanAvatar__orbit">
+            <circle className="aidanAvatar__orbitDot aidanAvatar__orbitDot--one" cx="120" cy="24" r="4" />
+            <circle className="aidanAvatar__orbitDot aidanAvatar__orbitDot--two" cx="216" cy="120" r="3" />
+            <circle className="aidanAvatar__orbitDot aidanAvatar__orbitDot--three" cx="120" cy="216" r="3.5" />
+          </g>
+        ) : null}
 
         <g className="aidanAvatar__body" filter="url(#aidanSoftShadow)">
           {showReferenceModel ? (
@@ -108,14 +152,12 @@ export function AidanAvatar({
           <path className="aidanAvatar__bottomBand" d="M75 150h91c8 0 14 6 14 14s-6 14-14 14H75c-8 0-14-6-14-14s6-14 14-14Z" />
           <path className="aidanAvatar__sidePad aidanAvatar__sidePad--left" d="M57 91c-10 0-18 8-18 18v37c0 11 9 20 20 20h17V91H57Z" />
           <path className="aidanAvatar__sidePad aidanAvatar__sidePad--right" d="M165 91h18c10 0 18 8 18 18v37c0 11-9 20-20 20h-16V91Z" />
-          <path
-            className="aidanAvatar__faceBlock"
-            d="M159 82c7 0 13 6 13 13v46c0 8-6 14-14 14H82c-8 0-14-6-14-14v-37c0-8 6-14 14-14h9c8 0 15-5 18-13 2-5 6-8 11-8s9-4 11-9l2-5c2-5 6-8 12-8 7 0 12 5 12 12v4c0 8 6 15 14 16l8 1Z"
-          />
+          <path className="aidanAvatar__faceBlock" d={faceBlockPath} />
 
           <g className="aidanAvatar__realisticPlane">
             <path d="M91 93c7-8 18-12 29-12s22 4 29 12c8 9 12 21 11 35-1 18-9 31-23 39-6 3-12 5-18 5-7 0-13-2-19-5-13-8-21-21-22-39-1-14 3-26 13-35Z" />
-            <path className="aidanAvatar__noseBridge" d="M121 115c-2 8-3 15-3 22 3 2 7 2 11 0" />
+            {noseShape === "round" ? <circle className="aidanAvatar__noseBridge" cx="121" cy="126" r="3.8" /> : null}
+            {noseShape === "square" ? <rect className="aidanAvatar__noseBridge" x="117" y="122" width="8" height="8" rx="1.6" /> : null}
           </g>
 
           <g className="aidanAvatar__logoNotches">
@@ -125,10 +167,19 @@ export function AidanAvatar({
           </g>
 
           <g className="aidanAvatar__eyes">
-            <ellipse className="aidanAvatar__eye aidanAvatar__eye--left" cx="101" cy="120" rx="8" ry="8" />
-            <ellipse className="aidanAvatar__eye aidanAvatar__eye--right" cx="140" cy="120" rx="8" ry="8" />
-            <path className="aidanAvatar__eyelid aidanAvatar__eyelid--left" d="M91 115c6-6 15-6 22 0" />
-            <path className="aidanAvatar__eyelid aidanAvatar__eyelid--right" d="M130 115c6-6 15-6 22 0" />
+            {eyeShape === "round" ? (
+              <>
+                <ellipse className="aidanAvatar__eye aidanAvatar__eye--left" cx={leftEyeX} cy={eyeCenterY} rx={eyeRadiusX} ry={eyeRadiusY} />
+                <ellipse className="aidanAvatar__eye aidanAvatar__eye--right" cx={rightEyeX} cy={eyeCenterY} rx={eyeRadiusX} ry={eyeRadiusY} />
+              </>
+            ) : (
+              <>
+                <rect className="aidanAvatar__eye aidanAvatar__eye--left" x={leftEyeX - eyeRadiusX} y={eyeCenterY - eyeRadiusY} width={eyeRadiusX * 2} height={eyeRadiusY * 2} rx="2" />
+                <rect className="aidanAvatar__eye aidanAvatar__eye--right" x={rightEyeX - eyeRadiusX} y={eyeCenterY - eyeRadiusY} width={eyeRadiusX * 2} height={eyeRadiusY * 2} rx="2" />
+              </>
+            )}
+            <path className="aidanAvatar__eyelid aidanAvatar__eyelid--left" d={`M${leftEyeX - 10} ${eyeCenterY - 5}c6-6 15-6 22 0`} />
+            <path className="aidanAvatar__eyelid aidanAvatar__eyelid--right" d={`M${rightEyeX - 10} ${eyeCenterY - 5}c6-6 15-6 22 0`} />
           </g>
 
           <g className="aidanAvatar__brows">
@@ -138,8 +189,8 @@ export function AidanAvatar({
 
           <g className="aidanAvatar__mouth">
             <rect className="aidanAvatar__mouthMask" x="96" y="122" width="50" height="28" rx="14" />
-            <path className="aidanAvatar__mouthLine" d="M104 135c9 8 25 8 34 0" />
-            <path className="aidanAvatar__mouthRealistic" d="M104 135c9 8 25 8 34 0" />
+            <path className="aidanAvatar__mouthLine" d={mouthLinePath} />
+            <path className="aidanAvatar__mouthRealistic" d={mouthLinePath} />
             <path className="aidanAvatar__mouthCavity" d="M104 133h34c-1 11-8 18-17 18s-16-7-17-18Z" />
             <path className="aidanAvatar__speechLip" d="M106 133c8-4 22-4 30 0" />
             <path className="aidanAvatar__speechLowerLip" d="M108 141c8 5 18 5 26 0" />
@@ -165,7 +216,7 @@ export function AidanAvatar({
 
         <path className="aidanAvatar__cautionMark" d="M120 30 132 52h-24l12-22Z" />
         <path className="aidanAvatar__checkMark" d="m91 193 17 17 42-42" />
-        <path className="aidanAvatar__motionTrace" d="M64 74c-13 16-20 36-20 59 0 19 5 36 15 51" />
+        {showMotionTrace ? <path className="aidanAvatar__motionTrace" d="M64 74c-13 16-20 36-20 59 0 19 5 36 15 51" /> : null}
         <g className="aidanAvatar__questionMarks" aria-hidden="true">
           <text x="174" y="56">?</text>
           <text x="196" y="85">?</text>

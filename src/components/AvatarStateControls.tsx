@@ -1,7 +1,12 @@
 import type {
   AidanExpressionTech,
-  AidanFaceVariant,
+  AidanFaceShape,
+  AidanEyePosition,
+  AidanEyeShape,
+  AidanEyeSize,
   AidanLipSyncMode,
+  AidanMouthShape,
+  AidanNoseShape,
   AidanTheme,
 } from "../types";
 
@@ -13,22 +18,43 @@ type AvatarStateControlsProps = {
   speakingIntensity: number;
   expressionTech: AidanExpressionTech;
   expressionStrength: number;
-  faceVariant: AidanFaceVariant;
   lipSyncMode: AidanLipSyncMode;
+  eyeShape: AidanEyeShape;
+  eyePosition: AidanEyePosition;
+  eyeSize: AidanEyeSize;
+  eyeColor: string;
+  noseShape: AidanNoseShape;
+  faceShape: AidanFaceShape;
+  mouthShape: AidanMouthShape;
+  showOrbit: boolean;
+  showMotionTrace: boolean;
   onDemoModeChange: (mode: AidanDemoMode) => void;
   onThemeChange: (theme: AidanTheme) => void;
   onSpeakingIntensityChange: (intensity: number) => void;
   onExpressionTechChange: (tech: AidanExpressionTech) => void;
   onExpressionStrengthChange: (strength: number) => void;
-  onFaceVariantChange: (variant: AidanFaceVariant) => void;
   onLipSyncModeChange: (mode: AidanLipSyncMode) => void;
+  onEyeShapeChange: (shape: AidanEyeShape) => void;
+  onEyePositionChange: (position: AidanEyePosition) => void;
+  onEyeSizeChange: (size: AidanEyeSize) => void;
+  onEyeColorChange: (color: string) => void;
+  onNoseShapeChange: (shape: AidanNoseShape) => void;
+  onFaceShapeChange: (shape: AidanFaceShape) => void;
+  onMouthShapeChange: (shape: AidanMouthShape) => void;
+  onShowOrbitChange: (value: boolean) => void;
+  onShowMotionTraceChange: (value: boolean) => void;
 };
 
 const demoModes: AidanDemoMode[] = ["manual", "interview", "presentation"];
 const themes: AidanTheme[] = ["light", "dark"];
 const expressionTechs: AidanExpressionTech[] = ["musetalk", "liveportrait", "sadtalker"];
-const faceVariants: AidanFaceVariant[] = ["roundedWave", "orbit", "haloFrame", "logoStudy", "smallScale", "darkMode"];
 const lipSyncModes: AidanLipSyncMode[] = ["soft", "viseme", "aperture", "minimal"];
+const eyeShapes: AidanEyeShape[] = ["round", "square"];
+const eyePositions: AidanEyePosition[] = ["high", "low", "close", "wide"];
+const eyeSizes: AidanEyeSize[] = ["small", "large"];
+const noseShapes: AidanNoseShape[] = ["round", "square", "none"];
+const faceShapes: AidanFaceShape[] = ["rounded", "square", "shield"];
+const mouthShapes: AidanMouthShape[] = ["smile", "flat", "round"];
 
 function label(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
@@ -40,15 +66,31 @@ export function AvatarStateControls({
   speakingIntensity,
   expressionTech,
   expressionStrength,
-  faceVariant,
   lipSyncMode,
+  eyeShape,
+  eyePosition,
+  eyeSize,
+  eyeColor,
+  noseShape,
+  faceShape,
+  mouthShape,
+  showOrbit,
+  showMotionTrace,
   onDemoModeChange,
   onThemeChange,
   onSpeakingIntensityChange,
   onExpressionTechChange,
   onExpressionStrengthChange,
-  onFaceVariantChange,
   onLipSyncModeChange,
+  onEyeShapeChange,
+  onEyePositionChange,
+  onEyeSizeChange,
+  onEyeColorChange,
+  onNoseShapeChange,
+  onFaceShapeChange,
+  onMouthShapeChange,
+  onShowOrbitChange,
+  onShowMotionTraceChange,
 }: AvatarStateControlsProps) {
   return (
     <div className="controlPanel" aria-label="Aidan controls">
@@ -112,13 +154,93 @@ export function AvatarStateControls({
       </label>
 
       <div className="controlPanel__group">
-        <span className="controlPanel__label">Face variant</span>
-        <select className="controlPanel__select" value={faceVariant} onChange={(event) => onFaceVariantChange(event.target.value as AidanFaceVariant)}>
-          {faceVariants.map((variant) => (
-            <option key={variant} value={variant}>
-              {label(variant)}
+        <span className="controlPanel__label">Eye shape</span>
+        <select className="controlPanel__select" value={eyeShape} onChange={(event) => onEyeShapeChange(event.target.value as AidanEyeShape)}>
+          {eyeShapes.map((shape) => (
+            <option key={shape} value={shape}>
+              {label(shape)}
             </option>
           ))}
+        </select>
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Eye position</span>
+        <select className="controlPanel__select" value={eyePosition} onChange={(event) => onEyePositionChange(event.target.value as AidanEyePosition)}>
+          {eyePositions.map((position) => (
+            <option key={position} value={position}>
+              {label(position)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Eye size</span>
+        <select className="controlPanel__select" value={eyeSize} onChange={(event) => onEyeSizeChange(event.target.value as AidanEyeSize)}>
+          {eyeSizes.map((size) => (
+            <option key={size} value={size}>
+              {label(size)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Eye color</span>
+        <input className="controlPanel__color" type="color" aria-label="Eye color" value={eyeColor} onChange={(event) => onEyeColorChange(event.target.value)} />
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Nose shape</span>
+        <select className="controlPanel__select" value={noseShape} onChange={(event) => onNoseShapeChange(event.target.value as AidanNoseShape)}>
+          {noseShapes.map((shape) => (
+            <option key={shape} value={shape}>
+              {label(shape)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Face shape</span>
+        <select className="controlPanel__select" value={faceShape} onChange={(event) => onFaceShapeChange(event.target.value as AidanFaceShape)}>
+          {faceShapes.map((shape) => (
+            <option key={shape} value={shape}>
+              {label(shape)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Mouth shape</span>
+        <select className="controlPanel__select" value={mouthShape} onChange={(event) => onMouthShapeChange(event.target.value as AidanMouthShape)}>
+          {mouthShapes.map((shape) => (
+            <option key={shape} value={shape}>
+              {label(shape)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Orbit dots</span>
+        <select className="controlPanel__select" value={showOrbit ? "on" : "off"} onChange={(event) => onShowOrbitChange(event.target.value === "on")}>
+          <option value="on">On</option>
+          <option value="off">Off</option>
+        </select>
+      </div>
+
+      <div className="controlPanel__group">
+        <span className="controlPanel__label">Motion stroke</span>
+        <select
+          className="controlPanel__select"
+          value={showMotionTrace ? "on" : "off"}
+          onChange={(event) => onShowMotionTraceChange(event.target.value === "on")}
+        >
+          <option value="on">On</option>
+          <option value="off">Off</option>
         </select>
       </div>
 

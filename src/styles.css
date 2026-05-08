@@ -649,6 +649,14 @@ h2 {
   font-weight: 680;
 }
 
+.controlPanel__color {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid rgba(95, 106, 136, 0.28);
+  border-radius: 7px;
+  background: #fff;
+}
+
 .controlPanel__label {
   color: var(--muted);
   font-size: 0.72rem;
@@ -716,7 +724,8 @@ h2 {
 
 .appShell[data-theme="dark"] .segmentedButton,
 .appShell[data-theme="dark"] .secondaryButton,
-.appShell[data-theme="dark"] .controlPanel__select {
+.appShell[data-theme="dark"] .controlPanel__select,
+.appShell[data-theme="dark"] .controlPanel__color {
   border-color: rgba(255, 255, 255, 0.15);
   background: #101511;
   color: #eef6ef;
@@ -986,10 +995,8 @@ h2 {
 .aidanAvatar__shellShape,
 .aidanAvatar__bottomBand,
 .aidanAvatar__sidePad,
-.aidanAvatar__faceBlock,
-.aidanAvatar__logoNotches,
-.aidanAvatar__realisticPlane {
-  opacity: 0;
+.aidanAvatar__faceBlock {
+  opacity: 1;
 }
 
 .aidanAvatar__body {
@@ -1003,8 +1010,8 @@ h2 {
 }
 
 .aidanAvatar__eye {
-  fill: var(--aidan-ink);
-  opacity: 0;
+  fill: var(--eye-color, var(--aidan-ink));
+  opacity: 1;
   transform-box: fill-box;
   transform-origin: center;
   transition:
@@ -1014,7 +1021,7 @@ h2 {
 
 .aidanAvatar__realisticPlane {
   fill: rgba(65, 227, 59, 0.04);
-  opacity: 0;
+  opacity: 0.42;
 }
 
 .aidanAvatar__noseBridge {
